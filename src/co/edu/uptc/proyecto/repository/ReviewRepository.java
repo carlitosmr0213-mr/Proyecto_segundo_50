@@ -1,5 +1,6 @@
 package co.edu.uptc.proyecto.repository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -12,18 +13,18 @@ public class ReviewRepository {
     private Map<Integer, Review> reviews = new HashMap<>();
     private int nextId = 1;
  
-    public Review save(Review review) {
+    public Review saveReview(Review review) {
         review.setId(nextId++);
         reviews.put(review.getId(), review);
         return review;
     }
  
-    public Review findById(int id) {
+    public Review findReviewById(int id) {
         return reviews.get(id);
     }
  
-    public Collection<Review> findAll() {
-        return reviews.values();
+    public List<Review> findAll() {
+        return new ArrayList<Review>(reviews.values());
     }
  
     // Composición: obtener reviews por videojuego
@@ -57,5 +58,15 @@ public class ReviewRepository {
     public boolean exists(int id) {
         return reviews.containsKey(id);
     }
+
+	public Map<Integer, Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Map<Integer, Review> reviews) {
+		this.reviews = reviews;
+	}
+    
+    
 }
  

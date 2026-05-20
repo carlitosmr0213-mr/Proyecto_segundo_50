@@ -8,7 +8,6 @@ public class Developer {
     private String email;
     
 	public Developer() {
-		
 	}
 
 	public Developer(int id, String name, String country, int foundedYear, String email) {

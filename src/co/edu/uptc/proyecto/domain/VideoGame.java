@@ -10,13 +10,25 @@ public class VideoGame {
 	private String genre;
 	private int releaseYear;
 	private double price;
-	private String plataform;
+	private String platform;
 	private List<Review> reviews;
 	
 	public VideoGame() {
 	}
+	
+	public VideoGame(int id, String title, String genre, int releaseYear, double price, String platform) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.genre = genre;
+		this.releaseYear = releaseYear;
+		this.price = price;
+		this.platform = platform;
+	}
 
-	public VideoGame(int id, String title, String genre, int releaseYear, double price, String plataform,
+
+
+	public VideoGame(int id, String title, String genre, int releaseYear, double price, String platform,
 			List<Review> reviews) {
 		super();
 		this.id = id;
@@ -24,7 +36,7 @@ public class VideoGame {
 		this.genre = genre;
 		this.releaseYear = releaseYear;
 		this.price = price;
-		this.plataform = plataform;
+		this.platform = platform;
 		this.reviews = new ArrayList<>();
 	}
 
@@ -69,11 +81,11 @@ public class VideoGame {
 	}
 
 	public String getPlataform() {
-		return plataform;
+		return platform;
 	}
 
-	public void setPlataform(String plataform) {
-		this.plataform = plataform;
+	public void setPlatform(String plataform) {
+		this.platform = plataform;
 	}
 
 	public List<Review> getReviews() {
@@ -87,7 +99,7 @@ public class VideoGame {
 	@Override
 	public String toString() {
 		return "VideoGame [id=" + id + ", title=" + title + ", genre=" + genre + ", releaseYear=" + releaseYear
-				+ ", price=" + price + ", plataform=" + plataform + ", reviews=" + reviews + "]";
+				+ ", price=" + price + ", platform=" + platform + ", reviews=" + reviews + "]";
 	}
 	
 	

@@ -1,7 +1,9 @@
 package co.edu.uptc.proyecto.repository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import co.edu.uptc.proyecto.domain.VideoGame;
 
@@ -21,8 +23,8 @@ public class VideoGameRepository {
         return videoGames.get(id);
     }
 
-    public Collection<VideoGame> findAll() {
-        return videoGames.values();
+    public List<VideoGame> findAll() {
+        return new ArrayList<VideoGame>(videoGames.values());
     }
 
     public VideoGame update(VideoGame videoGame) {
