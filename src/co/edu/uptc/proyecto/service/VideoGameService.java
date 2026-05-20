@@ -27,7 +27,7 @@ public class VideoGameService {
             throw new IllegalArgumentException("El año de lanzamiento no es válido.");
         }
         VideoGame vg = new VideoGame(0, title.trim(), genre.trim(), releaseYear, price, platform.trim());
-        return videoGameRepository.save(vg);
+        return videoGameRepository.saveVideoGame(vg);
     }
 
     public List<VideoGame> getAll() {
@@ -35,7 +35,7 @@ public class VideoGameService {
     }
 
     public VideoGame getVideoGameById(int id) {
-        VideoGame vg = videoGameRepository.findById(id);
+        VideoGame vg = videoGameRepository.findVideoGameById(id);
         if (vg == null) {
             throw new IllegalArgumentException("No existe un videojuego con ID: " + id);
         }
@@ -49,13 +49,13 @@ public class VideoGameService {
         if (releaseYear >= 1970 && releaseYear <= 2030) existing.setReleaseYear(releaseYear);
         if (price >= 0) existing.setPrice(price);
         if (platform != null && !platform.trim().isEmpty()) existing.setPlatform(platform.trim());
-        return videoGameRepository.update(existing);
+        return videoGameRepository.updateVideoGame(existing);
     }
 
     // Composición: al eliminar el juego se eliminan sus reviews
     public boolean deleteVideoGame(int id) {
         getVideoGameById(id); // valida que exista
         reviewRepository.deleteByVideoGameId(id);
-        return videoGameRepository.delete(id);
+        return videoGameRepository.deleteVideoGame(id);
     }
 }

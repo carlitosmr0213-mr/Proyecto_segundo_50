@@ -42,7 +42,7 @@ public class ReviewRepository {
         return review;
     }
  
-    public boolean delete(int id) {
+    public boolean deleteReview(int id) {
         if (!reviews.containsKey(id)) {
             return false;
         }
@@ -55,7 +55,7 @@ public class ReviewRepository {
         reviews.entrySet().removeIf(e -> e.getValue().getVideoGameId() == videoGameId);
     }
  
-    public boolean exists(int id) {
+    public boolean existsReview(int id) {
         return reviews.containsKey(id);
     }
 

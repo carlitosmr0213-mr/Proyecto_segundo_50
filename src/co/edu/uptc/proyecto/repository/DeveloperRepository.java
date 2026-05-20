@@ -1,7 +1,9 @@
 package co.edu.uptc.proyecto.repository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import co.edu.uptc.proyecto.domain.Developer;
  
@@ -10,21 +12,21 @@ public class DeveloperRepository {
     private Map<Integer, Developer> developers = new HashMap<>();
     private int nextId = 1;
  
-    public Developer save(Developer developer) {
+    public Developer saveDeveloper(Developer developer) {
         developer.setId(nextId++);
         developers.put(developer.getId(), developer);
         return developer;
     }
  
-    public Developer findById(int id) {
+    public Developer findDeveloperById(int id) {
         return developers.get(id);
     }
  
-    public Collection<Developer> findAll() {
-        return developers.values();
+    public List<Developer> findAll() {
+        return new ArrayList<Developer>(developers.values());
     }
  
-    public Developer update(Developer developer) {
+    public Developer updateDeveloper(Developer developer) {
         if (!developers.containsKey(developer.getId())) {
             return null;
         }
@@ -32,7 +34,7 @@ public class DeveloperRepository {
         return developer;
     }
  
-    public boolean delete(int id) {
+    public boolean deleteDeveloper(int id) {
         if (!developers.containsKey(id)) {
             return false;
         }
@@ -40,7 +42,7 @@ public class DeveloperRepository {
         return true;
     }
  
-    public boolean exists(int id) {
+    public boolean existsDeveloper(int id) {
         return developers.containsKey(id);
     }
 }

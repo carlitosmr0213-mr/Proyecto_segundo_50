@@ -22,7 +22,7 @@ public class ReviewService {
         if (score < 0.0 || score > 10.0) {
             throw new IllegalArgumentException("La puntuación debe estar entre 0.0 y 10.0.");
         }
-        if (videoGameRepository.findById(videoGameId) == null) {
+        if (videoGameRepository.findVideoGameById(videoGameId) == null) {
             throw new IllegalArgumentException("No existe un videojuego con ID: " + videoGameId);
         }
         Review review = new Review(0, author.trim(), score, comment.trim(), date.trim(), videoGameId);
@@ -42,7 +42,7 @@ public class ReviewService {
     }
 
     public List<Review> getByVideoGameId(int videoGameId) {
-        if (videoGameRepository.findById(videoGameId) == null) {
+        if (videoGameRepository.findVideoGameById(videoGameId) == null) {
             throw new IllegalArgumentException("No existe un videojuego con ID: " + videoGameId);
         }
         return reviewRepository.findByVideoGameId(videoGameId);
@@ -59,6 +59,6 @@ public class ReviewService {
 
     public boolean deleteReview(int id) {
         getReviewById(id); // valida que exista
-        return reviewRepository.delete(id);
+        return reviewRepository.deleteReview(id);
     }
 }

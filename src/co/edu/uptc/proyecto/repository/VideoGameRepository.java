@@ -13,13 +13,13 @@ public class VideoGameRepository {
     private int nextId = 1;
    
 
-    public VideoGame save(VideoGame videoGame) {
+    public VideoGame saveVideoGame(VideoGame videoGame) {
         videoGame.setId(nextId++);
         videoGames.put(videoGame.getId(), videoGame);
         return videoGame;
     }
 
-    public VideoGame findById(int id) {
+    public VideoGame findVideoGameById(int id) {
         return videoGames.get(id);
     }
 
@@ -27,7 +27,7 @@ public class VideoGameRepository {
         return new ArrayList<VideoGame>(videoGames.values());
     }
 
-    public VideoGame update(VideoGame videoGame) {
+    public VideoGame updateVideoGame(VideoGame videoGame) {
         if (!videoGames.containsKey(videoGame.getId())) {
             return null;
         }
@@ -35,7 +35,7 @@ public class VideoGameRepository {
         return videoGame;
     }
 
-    public boolean delete(int id) {
+    public boolean deleteVideoGame(int id) {
         if (!videoGames.containsKey(id)) {
             return false;
         }
@@ -43,7 +43,7 @@ public class VideoGameRepository {
         return true;
     }
 
-    public boolean exists(int id) {
+    public boolean existsVideoGame(int id) {
         return videoGames.containsKey(id);
     }
 }
