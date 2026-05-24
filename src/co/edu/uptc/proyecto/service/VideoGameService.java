@@ -11,23 +11,23 @@ public class VideoGameService {
 	private VideoGameRepository videoGameRepository;
     private ReviewRepository reviewRepository;
 
-    public VideoGameService(VideoGameRepository videoGameRepository, ReviewRepository reviewRepository) {
+    public VideoGameService() {
+	}
+
+	public VideoGameService(VideoGameRepository videoGameRepository, ReviewRepository reviewRepository) {
         this.videoGameRepository = videoGameRepository;
         this.reviewRepository = reviewRepository;
     }
 
-    public VideoGame createVideoGame(String title, String genre, int releaseYear, double price, String platform) {
-        if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("El título no puede estar vacío.");
-        }
-        if (price < 0) {
+    public boolean addVideoGame(VideoGame videoGame) {
+        if (videoGame.getPrice() < 0) {
             throw new IllegalArgumentException("El precio no puede ser negativo.");
         }
-        if (releaseYear < 1970 || releaseYear > 2030) {
+        if (videoGame.getReleaseYear() < 1970 || videoGame.getReleaseYear() > 2030) {
             throw new IllegalArgumentException("El año de lanzamiento no es válido.");
         }
-        VideoGame vg = new VideoGame(0, title.trim(), genre.trim(), releaseYear, price, platform.trim());
-        return videoGameRepository.saveVideoGame(vg);
+        videoGameRepository.saveVideoGame(videoGame);
+        return true;
     }
 
     public List<VideoGame> getAll() {
@@ -42,14 +42,18 @@ public class VideoGameService {
         return vg;
     }
 
-    public VideoGame updateVideoGame(int id, String title, String genre, int releaseYear, double price, String platform) {
-        VideoGame existing = getVideoGameById(id);
-        if (title != null && !title.trim().isEmpty()) existing.setTitle(title.trim());
-        if (genre != null && !genre.trim().isEmpty()) existing.setGenre(genre.trim());
-        if (releaseYear >= 1970 && releaseYear <= 2030) existing.setReleaseYear(releaseYear);
-        if (price >= 0) existing.setPrice(price);
-        if (platform != null && !platform.trim().isEmpty()) existing.setPlatform(platform.trim());
-        return videoGameRepository.updateVideoGame(existing);
+    public boolean updateVideoGame(VideoGame videoGame) {
+        VideoGame existing = getVideoGameById(videoGame.getId());
+        if (videoGame.getTitle() != null && !videoGame.getTitle().trim().isEmpty()) existing.setTitle(videoGame.getTitle().trim());
+        if (videoGame.getGenre() != null && !videoGame.getGenre().trim().isEmpty()) existing.setGenre(videoGame.getGenre().trim());
+        if (videoGame.getReleaseYear() >= 1970 && videoGame.getReleaseYear()<= 2030) existing.setReleaseYear(videoGame.getReleaseYear());
+        if (videoGame.getPrice() >= 0) existing.setPrice(videoGame.getPrice());
+        if (videoGame.getPlataform() != null && !videoGame.getPlataform().trim().isEmpty()) existing.setPlatform(videoGame.getPlataform().trim());
+        if(!videoGameRepository.existsVideoGame(videoGame.getId())) {
+        	return false;
+        }
+        videoGameRepository.updateVideoGame(existing);
+        return true;
     }
 
     // Composición: al eliminar el juego se eliminan sus reviews
