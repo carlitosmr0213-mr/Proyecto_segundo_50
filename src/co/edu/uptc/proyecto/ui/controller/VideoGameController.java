@@ -23,12 +23,12 @@ public class VideoGameController {
 			return resultDTO;
 		}
 		
-		validateNumericField(id, resultDTO);
+		validateNumericField(id, "ID", resultDTO);
 		validateAlphanumericField("ValidationTitle", title, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", resultDTO);
 		validateAlphanumericField("ValidationGenre", genre, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$",
 				resultDTO);
-		validateNumericField(releaseYear, resultDTO);
-		validateNumericField(price,resultDTO);
+		validateNumericField(releaseYear,"año", resultDTO);
+		validateNumericField(price, "año",resultDTO);
 		validateAlphanumericField("ValidationPlatform", platform, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ]+$", resultDTO);
 					
 		if(!resultDTO.isSuccessful()) {
@@ -74,11 +74,11 @@ public class VideoGameController {
         return resultDTO;
     }
 	
-	private ResultDTO validateNumericField(String field, ResultDTO resultDTO) {
+	private ResultDTO validateNumericField(String field, String nameField, ResultDTO resultDTO) {
     	boolean result = field.matches("^\\d{4}$");
     	if(!result) {
     		resultDTO.setSuccessful(false);
-    		resultDTO.getListMessageError().add("El ID debe tener solo 4 caracteres");
+    		resultDTO.getListMessageError().add("El " + nameField + "debe tener solo 4 caracteres");
     	}
     	return resultDTO;
     }

@@ -150,6 +150,6 @@ public class DeveloperView {
             System.out.println("Mensaje de error: ");
            	resultDTO.getListMessageError().forEach(mensajeError -> {
       		System.out.println(mensajeError);});
-        +    }
+            }
     }
 }
