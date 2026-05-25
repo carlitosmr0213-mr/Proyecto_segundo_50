@@ -96,7 +96,7 @@ public class VideoGameView {
     private ResultDTO findVideoGame() {
         System.out.println("*Digite el id del videojuego (Valor numérico y solo 4): ");
         String id = scanner.nextLine();
-        ResultDTO resultDTO = videoGameController.findStudentById(id);
+        ResultDTO resultDTO = videoGameController.findVideoGameById(id);
         if(!resultDTO.isSuccessful()) {
         	System.out.println("La información ingresada no pasó las siguientes validaciones: ");
         	resultDTO.getListMessageError().forEach(messajeError -> {

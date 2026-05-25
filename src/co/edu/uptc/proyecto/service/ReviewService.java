@@ -11,11 +11,21 @@ public class ReviewService {
     private VideoGameRepository videoGameRepository;
 
     public ReviewService(ReviewRepository reviewRepository, VideoGameRepository videoGameRepository) {
-        this.reviewRepository = reviewRepository;
-        this.videoGameRepository = videoGameRepository;
+        this.reviewRepository = new ReviewRepository();
+        this.videoGameRepository = new VideoGameRepository();
     }
 
-    public Review create(String author, double score, String comment, String date, int videoGameId) {
+    
+    
+    public ReviewService() {
+		super();
+		this.reviewRepository = new ReviewRepository();
+        this.videoGameRepository = new VideoGameRepository();
+	}
+
+
+
+	public boolean createReview(String id, String author, double score, String comment, String date, int videoGameId) {
         if (author == null || author.trim().isEmpty()) {
             throw new IllegalArgumentException("El autor no puede estar vacío.");
         }
@@ -26,7 +36,8 @@ public class ReviewService {
             throw new IllegalArgumentException("No existe un videojuego con ID: " + videoGameId);
         }
         Review review = new Review(0, author.trim(), score, comment.trim(), date.trim(), videoGameId);
-        return reviewRepository.saveReview(review);
+        reviewRepository.saveReview(review);
+        return true;
     }
 
     public List<Review> getAll() {
@@ -48,13 +59,17 @@ public class ReviewService {
         return reviewRepository.findByVideoGameId(videoGameId);
     }
 
-    public Review updateReview(int id, String author, double score, String comment, String date) {
+    public boolean updateReview(int id, String author, double score, String comment, String date) {
         Review existing = getReviewById(id);
         if (author != null && !author.trim().isEmpty()) existing.setAuthor(author.trim());
         if (score >= 0.0 && score <= 10.0) existing.setScore(score);
         if (comment != null && !comment.trim().isEmpty()) existing.setComment(comment.trim());
         if (date != null && !date.trim().isEmpty()) existing.setDate(date.trim());
-        return reviewRepository.update(existing);
+        if (!reviewRepository.existsReview(id)) {
+			return false;
+		}
+        reviewRepository.update(existing);
+        return true;
     }
 
     public boolean deleteReview(int id) {

@@ -2,12 +2,17 @@ package co.edu.uptc.proyecto.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import co.edu.uptc.proyecto.domain.Developer;
+import co.edu.uptc.proyecto.domain.Review;
 import co.edu.uptc.proyecto.domain.VideoGame;
 
 public class ResultDTO {
 	private boolean isSuccessful;
 	private String message;
 	private VideoGame videoGame;
+	private Developer developer;
+	private Review review;
 	private List<String> listMessageError;
 	
 	public ResultDTO() {
@@ -47,13 +52,24 @@ public class ResultDTO {
 	public VideoGame getVideoGame() {
 		return videoGame;
 	}
+	
+	public Developer getDeveloper() {
+		return developer;
+	}
 
-	/**
-	 * Método encargado de establecer el valor de student.
-	 *
-	 * @param student nuevo valor de student
-	 */
-	public void setStudent(VideoGame videoGame) {
+	public void setDeveloper(Developer developer) {
+		this.developer = developer;
+	}
+
+	public Review getReview() {
+		return review;
+	}
+
+	public void setReview(Review review) {
+		this.review = review;
+	}
+
+	public void setVideoGame(VideoGame videoGame) {
 		this.videoGame = videoGame;
 	}
 

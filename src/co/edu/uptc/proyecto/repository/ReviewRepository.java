@@ -11,10 +11,8 @@ import co.edu.uptc.proyecto.domain.Review;
 public class ReviewRepository {
  
     private Map<Integer, Review> reviews = new HashMap<>();
-    private int nextId = 1;
  
     public Review saveReview(Review review) {
-        review.setId(nextId++);
         reviews.put(review.getId(), review);
         return review;
     }

@@ -4,18 +4,24 @@ import java.util.Scanner;
 
 public class MainView {
 	private Scanner sc;
-	private VideoGameView videoGameStudent;
+	private VideoGameView videoGameView;
+	private DeveloperView developerView;
+	private ReviewView reviewView;
 	
 	public MainView() {
 		this.sc = new Scanner(System.in);
-		this.videoGameStudent = new VideoGameView();
-	}
+		this.videoGameView = new VideoGameView();
+		this.developerView = new DeveloperView();
+		this.reviewView = new ReviewView();
+		}
 	
 	public void runApp() {
 		StringBuilder menu = new StringBuilder();
 		menu.append("----- MENU PRINCIPAL ----- \n");
 		menu.append("\n[1]. Administración de la información de los videojuegos");
-		menu.append("\n[2]. Salir");
+		menu.append("\n[2]. Administración de la información de los desarrolladores");
+		menu.append("\n[3]. Administración de la información de los review");
+		menu.append("\n[0]. Salir");
 		boolean flag = true;
 		do {
 			System.out.println(menu.toString());
@@ -30,9 +36,15 @@ public class MainView {
             
 			switch(op) {
 			case 1:
-				videoGameStudent.menu();
+				videoGameView.menu();
 				break;
 			case 2:
+				developerView.menuDeveloper();
+				break;
+			case 3:
+				reviewView.menuReview();
+				break;
+			case 0:
 				flag = false;
 				break;
 			default:

@@ -10,11 +10,9 @@ import co.edu.uptc.proyecto.domain.VideoGame;
 public class VideoGameRepository {
 
     private Map<Integer, VideoGame> videoGames = new HashMap<>();
-    private int nextId = 1;
    
 
     public VideoGame saveVideoGame(VideoGame videoGame) {
-        videoGame.setId(nextId++);
         videoGames.put(videoGame.getId(), videoGame);
         return videoGame;
     }

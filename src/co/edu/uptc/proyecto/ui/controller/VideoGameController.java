@@ -98,7 +98,7 @@ public class VideoGameController {
         return videoGameService.getAll();
     }
 	
-	public ResultDTO findStudentById(String id) {
+	public ResultDTO findVideoGameById(String id) {
     	ResultDTO resultDTO = validateRequiredFieldsForKey(id);
     	if(!resultDTO.isSuccessful()) {
     		return resultDTO;
@@ -107,7 +107,7 @@ public class VideoGameController {
         if(!resultDTO.isSuccessful()) {
     		return resultDTO;
     	}
-        resultDTO.setStudent(videoGameService.getVideoGameById(Integer.parseInt(id)));
+        resultDTO.setVideoGame(videoGameService.getVideoGameById(Integer.parseInt(id)));
         return resultDTO;
     }
 	
