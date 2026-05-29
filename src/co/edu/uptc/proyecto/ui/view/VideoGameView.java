@@ -41,9 +41,7 @@ public class VideoGameView {
                 case 1 -> createVideoGame();
                 case 2 -> listVideoGames();
                 case 3 -> {
-                	ResultDTO resultDTO = findVideoGame();   	
-                	/* Practica de operador ternario */
-                	/* Se valida si el estudiante fue encontrado */
+                	ResultDTO resultDTO = findVideoGame();
                 	System.out.println(
                 			resultDTO.getVideoGame() != null ? 
                 			resultDTO.getVideoGame() : "El Videojuego no fue encontrado ");
@@ -55,8 +53,6 @@ public class VideoGameView {
     }
 
     private void createVideoGame() {
-    	/* Long id, String codeUniversity, String firstName,
-    		String lastName, String email*/
         System.out.println("*Digite el id (Valor numérico): ");
         String id = scanner.nextLine();
         System.out.println("*Digite el titulo (solo letras)");
@@ -67,7 +63,7 @@ public class VideoGameView {
         String releaseYear = scanner.nextLine();
         System.out.println("*Digite el precio (solo numeros) ");
         String price = scanner.nextLine();
-        System.out.println("*Digite la plataforma dedescarga (solo letras) ");
+        System.out.println("*Digite la plataforma de descarga (solo letras) ");
         String platform = scanner.nextLine();
         
         ResultDTO resultDTO = videoGameController.addVideoGame(id, title, genre, releaseYear,
@@ -80,7 +76,7 @@ public class VideoGameView {
         	});
         	return;
         }
-        System.out.println("El estudiante fue creado");
+        System.out.println("El videojuego fue creado");
     }
 
     private void listVideoGames() {
@@ -112,14 +108,17 @@ public class VideoGameView {
     }
 
     private void updateVideoGame() {
-    	/* Reutilizamos el método de buscar estudiante */
-    	/* En la instancia ResultDTO, hay un objeto de StudentDTO que contiene la información 
-    	 * obtenida de la consulta */
     	ResultDTO resultDTO = this.findVideoGame();
-    	/* Si la ejecución de la búsqueda de estudiante no fue exitosa finaliza */
+    	
     	if(!resultDTO.isSuccessful()) {
     		return;
     	}
+    	
+    	 if (resultDTO.getVideoGame() == null) {
+    	        System.out.println("Error: no se encontró el videojuego.");
+    	        return;
+    	    }
+    	
         System.out.println("Digite el titulo del videojuego: ( " 
         		+ resultDTO.getVideoGame().getTitle() + " ) (Presione enter si desea conservar)");
         String title = scanner.nextLine();
@@ -135,7 +134,6 @@ public class VideoGameView {
         System.out.println("Digite la plataforma del videjuego: ( " 
         		+ resultDTO.getVideoGame().getPlataform() + ") (Presione enter si desea conservar)");
         String platform = scanner.nextLine();
-        
         
         ResultDTO resultUpdateDTO = videoGameController.updateVideoGame(
         		resultDTO.getVideoGame().getId(), title,genre,releaseYear,price,platform);

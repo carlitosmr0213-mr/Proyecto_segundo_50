@@ -41,9 +41,7 @@ public class DeveloperView {
                 case 1 -> createDeveloper();
                 case 2 -> listDeveloper();
                 case 3 -> {
-                	ResultDTO resultDTO = findDeveloper();   	
-                	/* Practica de operador ternario */
-                	/* Se valida si el estudiante fue encontrado */
+                	ResultDTO resultDTO = findDeveloper();
                 	System.out.println(
                 			resultDTO.getDeveloper() != null ? 
                 			resultDTO.getDeveloper() : "El Desarrollador no fue encontrado ");
@@ -55,8 +53,6 @@ public class DeveloperView {
 	}
 	
 	private void createDeveloper() {
-    	/* Long id, String codeUniversity, String firstName,
-    		String lastName, String email*/
         System.out.println("*Digite el id (Valor numérico): ");
         String id = scanner.nextLine();
         System.out.println("*Digite el nombre (solo letras)");
@@ -111,10 +107,15 @@ public class DeveloperView {
 	
 	private void updateDeveloper() {
     	ResultDTO resultDTO = this.findDeveloper();
-    	/* Si la ejecución de la búsqueda de estudiante no fue exitosa finaliza */
     	if(!resultDTO.isSuccessful()) {
     		return;
     	}
+    	
+    	if (resultDTO.getDeveloper() == null) {
+	        System.out.println("Error: no se encontró el desarrollador.");
+	        return;
+	    }
+    	
         System.out.println("Digite el nombre del desarrollador: ( " 
         		+ resultDTO.getDeveloper().getName() + " ) (Presione enter si desea conservar)");
         String name = scanner.nextLine();
@@ -130,7 +131,7 @@ public class DeveloperView {
         
         
         ResultDTO resultUpdateDTO = developerController.updateDeveloper(
-        		String.valueOf(resultDTO.getDeveloper().getId()), name, country, Integer.parseInt(foundedYear), email);
+        		String.valueOf(resultDTO.getDeveloper().getId()), name, country, foundedYear, email);
         if(resultUpdateDTO.isSuccessful()) {
         	System.out.println(resultUpdateDTO.getMessage());
         }else {

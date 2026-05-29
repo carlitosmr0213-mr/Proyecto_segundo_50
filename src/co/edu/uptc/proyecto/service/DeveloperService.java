@@ -8,28 +8,14 @@ import co.edu.uptc.proyecto.repository.DeveloperRepository;
 public class DeveloperService {
 	private DeveloperRepository developerRepository;
 
-    public DeveloperService(DeveloperRepository developerRepository) {
-        this.developerRepository = new DeveloperRepository();
-    }
-
 	public DeveloperService() {
 		super();
-		
 		this.developerRepository = new DeveloperRepository();
 	}
 
 
 
 	public boolean createDeveloper(String id, String name, String country, int foundedYear, String email) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre del desarrollador no puede estar vacío.");
-        }
-        if (email == null || !email.contains("@")) {
-            throw new IllegalArgumentException("El email no es válido.");
-        }
-        if (foundedYear < 1970 || foundedYear > 2026) {
-            throw new IllegalArgumentException("El año de fundación no es válido.");
-        }
         Developer developer = new Developer(Integer.parseInt(id.trim()), name.trim(), country.trim(), foundedYear, email.trim());
         developerRepository.saveDeveloper(developer);
         return true;
@@ -41,9 +27,6 @@ public class DeveloperService {
 
     public Developer getDeveloperById(int id) {
         Developer developer = developerRepository.findDeveloperById(id);
-        if (developer == null) {
-            throw new IllegalArgumentException("No existe un desarrollador con ID: " + id);
-        }
         return developer;
     }
 

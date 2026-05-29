@@ -9,13 +9,6 @@ import co.edu.uptc.proyecto.repository.VideoGameRepository;
 public class ReviewService {
 	private ReviewRepository reviewRepository;
     private VideoGameRepository videoGameRepository;
-
-    public ReviewService(ReviewRepository reviewRepository, VideoGameRepository videoGameRepository) {
-        this.reviewRepository = new ReviewRepository();
-        this.videoGameRepository = new VideoGameRepository();
-    }
-
-    
     
     public ReviewService() {
 		super();
@@ -26,16 +19,7 @@ public class ReviewService {
 
 
 	public boolean createReview(String id, String author, double score, String comment, String date, int videoGameId) {
-        if (author == null || author.trim().isEmpty()) {
-            throw new IllegalArgumentException("El autor no puede estar vacío.");
-        }
-        if (score < 0.0 || score > 10.0) {
-            throw new IllegalArgumentException("La puntuación debe estar entre 0.0 y 10.0.");
-        }
-        if (videoGameRepository.findVideoGameById(videoGameId) == null) {
-            throw new IllegalArgumentException("No existe un videojuego con ID: " + videoGameId);
-        }
-        Review review = new Review(0, author.trim(), score, comment.trim(), date.trim(), videoGameId);
+        Review review = new Review(Integer.parseInt(id.trim()), author.trim(), score, comment.trim(), date.trim(), videoGameId);
         reviewRepository.saveReview(review);
         return true;
     }
@@ -46,9 +30,6 @@ public class ReviewService {
 
     public Review getReviewById(int id) {
         Review review = reviewRepository.findReviewById(id);
-        if (review == null) {
-            throw new IllegalArgumentException("No existe una reseña con ID: " + id);
-        }
         return review;
     }
 
@@ -59,7 +40,7 @@ public class ReviewService {
         return reviewRepository.findByVideoGameId(videoGameId);
     }
 
-    public boolean updateReview(int id, String author, double score, String comment, String date) {
+    public boolean updateReview(int id, String author, double score, String comment, String date, int videoGameId) {
         Review existing = getReviewById(id);
         if (author != null && !author.trim().isEmpty()) existing.setAuthor(author.trim());
         if (score >= 0.0 && score <= 10.0) existing.setScore(score);
@@ -68,6 +49,7 @@ public class ReviewService {
         if (!reviewRepository.existsReview(id)) {
 			return false;
 		}
+        if (videoGameId > 0) existing.setVideoGameId(videoGameId);
         reviewRepository.update(existing);
         return true;
     }

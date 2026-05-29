@@ -3,7 +3,6 @@ package co.edu.uptc.proyecto.ui.view;
 import java.util.List;
 import java.util.Scanner;
 
-import co.edu.uptc.proyecto.domain.Developer;
 import co.edu.uptc.proyecto.domain.Review;
 import co.edu.uptc.proyecto.dto.ResultDTO;
 import co.edu.uptc.proyecto.ui.controller.ReviewController;
@@ -42,12 +41,10 @@ public class ReviewView {
                 case 1 -> createReview();
                 case 2 -> listReview();
                 case 3 -> {
-                	ResultDTO resultDTO = findReview();   	
-                	/* Practica de operador ternario */
-                	/* Se valida si el estudiante fue encontrado */
+                	ResultDTO resultDTO = findReview();
                 	System.out.println(
                 			resultDTO.getReview() != null ? 
-                			resultDTO.getReview() : "El Review no fue encontrado ");
+                			resultDTO.getReview() : "El review no fue encontrado ");
                 }
                 case 4 -> updateReview();
                 case 5 -> deleteReview();
@@ -56,15 +53,15 @@ public class ReviewView {
 	}
 	
 	private void createReview() {
-		System.out.println("*Digite el id (Valor numérico): ");
+		System.out.println("*Digite el id del review (Valor numérico): ");
         String id = scanner.nextLine();
-        System.out.println("*Digite el nombre (solo letras)");
+        System.out.println("*Digite el nombre del autor (solo letras)");
         String author = scanner.nextLine();
-        System.out.println("*Digite el pais (Solo letras): ");
+        System.out.println("*Digite el puntaje (Solo letras): ");
         String score = scanner.nextLine();
-        System.out.println("*Digite el año de fundacion (Solo numeros, Ej: 2005): ");
+        System.out.println("*Digite el comentario (Solo letras): ");
         String comment = scanner.nextLine();
-        System.out.println("*Digite el email (letras y simbolos) ");
+        System.out.println("*Digite la fecha (DD/MM/YYYY) ");
         String date = scanner.nextLine();
         System.out.println("*Digite el id del videojuego (Valor numérico): ");
         String idVideoGame = scanner.nextLine();
@@ -79,12 +76,12 @@ public class ReviewView {
         	});
         	return;
         }
-        System.out.println("El desarrollador fue creado");
+        System.out.println("El review fue creado");
 	}
 	
 	private void listReview() {
         List<Review> reviews = reviewController.listReview();
-        System.out.println("Lista de desarrollador: ");
+        System.out.println("Lista de reviews: ");
         if(reviews.isEmpty()) {
         	System.out.println("\nNo hay registros\n");
         	return;
@@ -112,10 +109,15 @@ public class ReviewView {
 	
 	private void updateReview() {
     	ResultDTO resultDTO = this.findReview();
-    	/* Si la ejecución de la búsqueda de estudiante no fue exitosa finaliza */
     	if(!resultDTO.isSuccessful()) {
     		return;
     	}
+    	
+    	if (resultDTO.getReview() == null) {
+	        System.out.println("Error: no se encontró el review.");
+	        return;
+	    }
+    	
         System.out.println("Digite el autor del review: ( " 
         		+ resultDTO.getReview().getAuthor() + " ) (Presione enter si desea conservar)");
         String author = scanner.nextLine();
@@ -125,16 +127,13 @@ public class ReviewView {
         System.out.println("Digite el comentario del review: ( " 
         		+ resultDTO.getReview().getComment() + ") (Presione enter si desea conservar)");
         String comment = scanner.nextLine();
-        System.out.println("Digite la fecha del review: ( " 
+        System.out.println("Digite la fecha del review (DD/MM/YYYY): ( " 
         		+ resultDTO.getReview().getDate() + ") (Presione enter si desea conservar)");
         String date = scanner.nextLine();
-        System.out.println("Digite el id del videojuego del review: ( " 
-        		+ resultDTO.getReview().getDate() + ") (Presione enter si desea conservar)");
-        String idVideoGame = scanner.nextLine();
         
         
         ResultDTO resultUpdateDTO = reviewController.updateReview(
-        		String.valueOf(resultDTO.getReview().getId()), author, Double.parseDouble(score), comment, date, Integer.parseInt(idVideoGame));
+        		String.valueOf(resultDTO.getReview().getId()), author, score, comment, date, String.valueOf(resultDTO.getReview().getVideoGameId()));
         if(resultUpdateDTO.isSuccessful()) {
         	System.out.println(resultUpdateDTO.getMessage());
         }else {

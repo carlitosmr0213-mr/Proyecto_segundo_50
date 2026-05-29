@@ -1,3 +1,4 @@
+
 package co.edu.uptc.proyecto.ui.controller;
 
 import java.util.List;
@@ -21,10 +22,12 @@ public class ReviewController {
 			return resultDTO;
 		}
 		
-		validateNumericField(String.valueOf(score), resultDTO);
-		validateNumericField(String.valueOf(videoGameId), resultDTO);
-		validateAlphanumericField("ValidationAuthor", author, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", resultDTO);
-		validateAlphanumericField("ValidationComment", comment, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", resultDTO);
+		validateAlphanumericField("ValidateId", id, "^\\d{1,4}$", true, resultDTO);
+		validateAlphanumericField("ValidationDate", date, "^(0[1-9]|[12]\\d|3[01])/(0[1-9]|1[0-2])/(19|20)\\d{2}$", false, resultDTO);
+		validateAlphanumericField("ValidationScore", String.valueOf(score), "^[+-]?(\\d+\\.?\\d*|\\.\\d+)$", true, resultDTO);
+		validateAlphanumericField("ValidateVideoGameId", String.valueOf(videoGameId),"^\\d{1,4}$", true, resultDTO);
+		validateAlphanumericField("ValidationAuthor", author, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", true, resultDTO);
+		validateAlphanumericField("ValidationComment", comment, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", true,resultDTO);
 		
 		if (!resultDTO.isSuccessful()) {
 			return resultDTO;
@@ -71,20 +74,14 @@ public class ReviewController {
 	}
 	
 	private ResultDTO validateAlphanumericField(String nameValidation, String field, String pattern,
-    		ResultDTO resultDTO) {
+    		boolean required, ResultDTO resultDTO) {
+		if ((!required) && field == null || field.trim().isBlank()) {
+			return resultDTO;
+		}
     	boolean result = field.matches(pattern);
     	if(!result) {
     		resultDTO.setSuccessful(false);
     		resultDTO.getListMessageError().add("Falló la validación denominada:  " + nameValidation);
-    	}
-    	return resultDTO;
-    }
-	
-	private ResultDTO validateNumericField(String field, ResultDTO resultDTO) {
-    	boolean result = field.matches("^\\d{4}$");
-    	if(!result) {
-    		resultDTO.setSuccessful(false);
-    		resultDTO.getListMessageError().add("El ID debe tener solo 4 caracteres");
     	}
     	return resultDTO;
     }
@@ -98,7 +95,7 @@ public class ReviewController {
 		if(!resultDTO.isSuccessful()) {
     		return resultDTO;
     	}
-    	validateNumericField(id, resultDTO);
+		validateAlphanumericField("ValidateId", id, "^\\d{1,4}$", true, resultDTO);
         if(!resultDTO.isSuccessful()) {
     		return resultDTO;
     	}
@@ -116,8 +113,8 @@ public class ReviewController {
         return resultDTO;
     }
 	
-	public ResultDTO updateReview(String id, String author, double score, String comment, String date, int videoGameId) {
-		ResultDTO resultDTO = new ResultDTO();
+	public ResultDTO updateReview(String id, String author, String score, String comment, String date, String videoGameId) {
+		ResultDTO resultDTO = this.findReviewById(id);
 		resultDTO.setSuccessful(true);
 		
 		if (id == null || id.trim().isEmpty()) {
@@ -128,10 +125,9 @@ public class ReviewController {
 			resultDTO.setSuccessful(false);
 			resultDTO.getListMessageError().add("El autor no puede ser null, ni vacío ");
 		}
-		if (score < 0) {
-			resultDTO.setSuccessful(false);
-			resultDTO.getListMessageError().add("El id no puede ser menor que 0");
-		}
+		 double scoreDouble = (score == null || score.trim().isEmpty()) 
+                 ? resultDTO.getReview().getScore() 
+                 : Double.parseDouble(score.trim());
 		if (comment == null || comment.trim().isEmpty()) {
 			resultDTO.setSuccessful(false);
 			resultDTO.getListMessageError().add("El comentario no puede ser null, ni vacío ");
@@ -140,8 +136,11 @@ public class ReviewController {
 			resultDTO.setSuccessful(false);
 			resultDTO.getListMessageError().add("La fecha no puede ser null, ni vacío ");
 		}
+		int videoGameInt = (videoGameId == null || videoGameId.trim().isEmpty()) 
+                ? resultDTO.getVideoGame().getReleaseYear() 
+                : Integer.parseInt(videoGameId.trim());
 		
-		boolean result = reviewService.updateReview(Integer.parseInt(id), author, score, comment, date);
+		boolean result = reviewService.updateReview(Integer.parseInt(id), author, scoreDouble, comment, date, videoGameInt);
 		if (!result) {
 			resultDTO.setSuccessful(false);
 			resultDTO.getListMessageError().add("La review no fue encontrado");
@@ -157,7 +156,7 @@ public class ReviewController {
     	if(!resultDTO.isSuccessful()) {
     		return resultDTO;
     	}
-    	validateNumericField(id, resultDTO);
+		validateAlphanumericField("ValidateId", id,"^\\d{1,4}$", true, resultDTO);
         if(!resultDTO.isSuccessful()) {
     		return resultDTO;
     	}

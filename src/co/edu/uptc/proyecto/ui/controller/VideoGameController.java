@@ -23,13 +23,12 @@ public class VideoGameController {
 			return resultDTO;
 		}
 		
-		validateNumericField(id, "ID", resultDTO);
-		validateAlphanumericField("ValidationTitle", title, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", resultDTO);
-		validateAlphanumericField("ValidationGenre", genre, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$",
-				resultDTO);
-		validateNumericField(releaseYear,"año", resultDTO);
-		validateNumericField(price, "año",resultDTO);
-		validateAlphanumericField("ValidationPlatform", platform, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ]+$", resultDTO);
+		validateAlphanumericField("ValidateId", id, "^\\d{1,4}$", true, resultDTO);
+		validateAlphanumericField("ValidationTitle", title, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", true, resultDTO);
+		validateAlphanumericField("ValidationGenre", genre, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", true, resultDTO);
+		validateAlphanumericField("ValidationReleaseYear", releaseYear, "^(19[7-9]\\d|200\\d|201\\d|202[0-6])$", true, resultDTO);
+		validateAlphanumericField("ValidationPrice", price, "^[+-]?(\\d+\\.?\\d*|\\.\\d+)$",true, resultDTO);
+		validateAlphanumericField("ValidationPlatform", platform, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ]+$", false,resultDTO);
 					
 		if(!resultDTO.isSuccessful()) {
 			return resultDTO;
@@ -39,7 +38,7 @@ public class VideoGameController {
 				genre, Integer.parseInt(releaseYear), Double.parseDouble(price), platform));		
         if(!result) {
         	resultDTO.setSuccessful(false);
-        	resultDTO.getListMessageError().add("Ya existe un estudiante con ese id");
+        	resultDTO.getListMessageError().add("Ya existe un videojuego con ese id");
         }
         
         return resultDTO;
@@ -74,18 +73,11 @@ public class VideoGameController {
         return resultDTO;
     }
 	
-	private ResultDTO validateNumericField(String field, String nameField, ResultDTO resultDTO) {
-    	boolean result = field.matches("^\\d{4}$");
-    	if(!result) {
-    		resultDTO.setSuccessful(false);
-    		resultDTO.getListMessageError().add("El " + nameField + "debe tener solo 4 caracteres");
-    	}
-    	return resultDTO;
-    }
-	
-	
 	private ResultDTO validateAlphanumericField(String nameValidation, String field, String pattern,
-    		ResultDTO resultDTO) {
+    		boolean required, ResultDTO resultDTO) {
+		if ((!required) && field == null || field.trim().isBlank()) {
+			return resultDTO;
+		}
     	boolean result = field.matches(pattern);
     	if(!result) {
     		resultDTO.setSuccessful(false);
@@ -103,7 +95,7 @@ public class VideoGameController {
     	if(!resultDTO.isSuccessful()) {
     		return resultDTO;
     	}
-    	validateNumericField(id, resultDTO);
+		validateAlphanumericField("ValidateId", id,"^\\d{1,4}$", true, resultDTO);
         if(!resultDTO.isSuccessful()) {
     		return resultDTO;
     	}
@@ -123,30 +115,29 @@ public class VideoGameController {
 	
 	public ResultDTO updateVideoGame(int id, String title, String genre,
 			String releaseYear, String price, String platform) {
-    	ResultDTO resultDTO = new ResultDTO();
+    	ResultDTO resultDTO = this.findVideoGameById(String.valueOf(id));
     	resultDTO.setSuccessful(true);
     	
         if(title != null && !title.trim().isEmpty()) {
-        	validateAlphanumericField("ValidationTitle", title, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$",
+        	validateAlphanumericField("ValidationTitle", title, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", true,
             		resultDTO);
         }
         
         if(genre != null && !genre.trim().isEmpty()) {
-        	validateAlphanumericField("ValidationGenre", genre, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$",
+        	validateAlphanumericField("ValidationGenre", genre, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", true,
             		resultDTO);
         }
         
-        if(releaseYear != null && !releaseYear.trim().isEmpty()) {
-            validateNumericField(releaseYear, resultDTO);
-        }
-        
-        if(price != null && !price.trim().isEmpty()) {
-            validateNumericField(price, resultDTO);
-        }
+        int releaseYearInt = (releaseYear == null || releaseYear.trim().isEmpty()) 
+                ? resultDTO.getVideoGame().getReleaseYear() 
+                : Integer.parseInt(releaseYear.trim());
+
+        double priceDouble = (price == null || price.trim().isEmpty()) 
+                     ? resultDTO.getVideoGame().getPrice() 
+                     : Double.parseDouble(price.trim());
         
         if(platform != null && !platform.trim().isEmpty()) {
-        	validateAlphanumericField("ValidationGenre", platform, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ]+$",
-            		resultDTO);
+        	validateAlphanumericField("ValidationGenre", platform, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ]+$", true, resultDTO);
         }
         
         /* Si la información no pasa las validaciones, no debe actualizar */
@@ -155,7 +146,7 @@ public class VideoGameController {
         }
         
         boolean result = videoGameService.updateVideoGame(new VideoGame(id, title,
-				genre, Integer.parseInt(releaseYear), Double.parseDouble(price), platform));
+				genre, releaseYearInt, priceDouble, platform));
         if(!result) {
         	resultDTO.setSuccessful(false);
         	resultDTO.getListMessageError().add("El videojuego no fue encontrado.");
@@ -172,7 +163,7 @@ public class VideoGameController {
     	if(!resultDTO.isSuccessful()) {
     		return resultDTO;
     	}
-    	validateNumericField(id, resultDTO);
+		validateAlphanumericField("ValidateId", id,"^\\d{1,4}$", true, resultDTO);
         if(!resultDTO.isSuccessful()) {
     		return resultDTO;
     	}

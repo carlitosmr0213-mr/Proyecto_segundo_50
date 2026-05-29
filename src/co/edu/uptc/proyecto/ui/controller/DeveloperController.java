@@ -21,12 +21,11 @@ public class DeveloperController {
 			return resultDTO;
 		}
 		
-		validateNumericField(id, resultDTO);
-		validateAlphanumericField("ValidationName", name, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", resultDTO);
-		validateAlphanumericField("ValidationCountry", country, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$",
-				resultDTO);
-		validateNumericField(foundedYear, resultDTO);
-		validateAlphanumericField("ValidationEmail", email, "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", resultDTO);
+		validateAlphanumericField("ValidateId", id, "^\\d{1,4}$", true, resultDTO);
+		validateAlphanumericField("ValidationName", name, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", true, resultDTO);
+		validateAlphanumericField("ValidationCountry", country, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", true, resultDTO);
+		validateAlphanumericField("ValidationFoundedYear", foundedYear, "^(19[7-9]\\d|200\\d|201\\d|202[0-6])$", true, resultDTO);
+		validateAlphanumericField("ValidationEmail", email, "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", true, resultDTO);
 		
 		if (!resultDTO.isSuccessful()) {
 			return resultDTO;
@@ -75,20 +74,14 @@ public class DeveloperController {
  	}
 	
 	private ResultDTO validateAlphanumericField(String nameValidation, String field, String pattern,
-    		ResultDTO resultDTO) {
+    		boolean required, ResultDTO resultDTO) {
+		if ((!required) && field == null || field.trim().isBlank()) {
+			return resultDTO;
+		}
     	boolean result = field.matches(pattern);
     	if(!result) {
     		resultDTO.setSuccessful(false);
     		resultDTO.getListMessageError().add("Falló la validación denominada:  " + nameValidation);
-    	}
-    	return resultDTO;
-    }
-	
-	private ResultDTO validateNumericField(String field, ResultDTO resultDTO) {
-    	boolean result = field.matches("^\\d{4}$");
-    	if(!result) {
-    		resultDTO.setSuccessful(false);
-    		resultDTO.getListMessageError().add("El ID debe tener solo 4 caracteres");
     	}
     	return resultDTO;
     }
@@ -102,7 +95,7 @@ public class DeveloperController {
 		if(!resultDTO.isSuccessful()) {
     		return resultDTO;
     	}
-    	validateNumericField(id, resultDTO);
+		validateAlphanumericField("ValidateId", id, "^\\d{1,4}$", true, resultDTO);
         if(!resultDTO.isSuccessful()) {
     		return resultDTO;
     	}
@@ -120,8 +113,8 @@ public class DeveloperController {
         return resultDTO;
     }
 	
-	public ResultDTO updateDeveloper(String id, String name, String country, int foundedYear, String email) {
-		ResultDTO resultDTO = new ResultDTO();
+	public ResultDTO updateDeveloper(String id, String name, String country, String foundedYear, String email) {
+		ResultDTO resultDTO = findDeveloperById(id);
     	resultDTO.setSuccessful(true);
     	
 
@@ -140,17 +133,16 @@ public class DeveloperController {
 			resultDTO.getListMessageError().add("El país no puede ser nulo, ni vacio");
 		}
 		
-		if (foundedYear <= 0 || foundedYear > java.time.Year.now().getValue()) {
-			resultDTO.setSuccessful(false);
-			resultDTO.getListMessageError().add("El año no puede ser nulo, ni vacio, tampoco mayor al año actual");
-		}
+		int foundedYearInt = (foundedYear == null || foundedYear.trim().isEmpty()) 
+                ? resultDTO.getDeveloper().getFoundedYear() 
+                : Integer.parseInt(foundedYear.trim());
 		
 		if (email == null || email.trim().isEmpty()) {
 			resultDTO.setSuccessful(false);
-			resultDTO.getListMessageError().add("El país no puede ser nulo, ni vacio");
+			resultDTO.getListMessageError().add("El email no puede ser nulo, ni vacio");
 		}
     	
-		boolean result = developerService.updateDeveloper(Integer.parseInt(id), name, country, foundedYear, email);
+		boolean result = developerService.updateDeveloper(Integer.parseInt(id), name, country, foundedYearInt, email);
 		if (!result) {
 			resultDTO.setSuccessful(false);
 			resultDTO.getListMessageError().add("El desarrollador no fue encontrado.");
@@ -167,7 +159,7 @@ public class DeveloperController {
     	if(!resultDTO.isSuccessful()) {
     		return resultDTO;
     	}
-    	validateNumericField(id, resultDTO);
+		validateAlphanumericField("ValidateId", id, "^\\d{1,4}$", true, resultDTO);
         if(!resultDTO.isSuccessful()) {
     		return resultDTO;
     	}

@@ -11,21 +11,12 @@ public class VideoGameService {
 	private VideoGameRepository videoGameRepository;
     private ReviewRepository reviewRepository;
 
-    public VideoGameService() {
-	}
-
-	public VideoGameService(VideoGameRepository videoGameRepository, ReviewRepository reviewRepository) {
-        this.videoGameRepository = videoGameRepository;
-        this.reviewRepository = reviewRepository;
+	public VideoGameService() {
+        this.videoGameRepository = new VideoGameRepository();
+        this.reviewRepository = new ReviewRepository();
     }
 
     public boolean addVideoGame(VideoGame videoGame) {
-        if (videoGame.getPrice() < 0) {
-            throw new IllegalArgumentException("El precio no puede ser negativo.");
-        }
-        if (videoGame.getReleaseYear() < 1970 || videoGame.getReleaseYear() > 2030) {
-            throw new IllegalArgumentException("El año de lanzamiento no es válido.");
-        }
         videoGameRepository.saveVideoGame(videoGame);
         return true;
     }
@@ -36,9 +27,6 @@ public class VideoGameService {
 
     public VideoGame getVideoGameById(int id) {
         VideoGame vg = videoGameRepository.findVideoGameById(id);
-        if (vg == null) {
-            throw new IllegalArgumentException("No existe un videojuego con ID: " + id);
-        }
         return vg;
     }
 
