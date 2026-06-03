@@ -53,13 +53,13 @@ public class VideoGameView {
     }
 
     private void createVideoGame() {
-        System.out.println("*Digite el id (Valor numérico): ");
+        System.out.println("*Digite el id (Valor numérico de 4 digitos): ");
         String id = scanner.nextLine();
         System.out.println("*Digite el titulo (solo letras)");
         String title = scanner.nextLine();
         System.out.println("*Digite el genero (Solo letras): ");
         String genre = scanner.nextLine();
-        System.out.println("*Digite el año de lanzamiendo (Solo nuemeros, Ej: 2005): ");
+        System.out.println("*Digite el año de lanzamiendo (Solo numeros, Ej: 2005): ");
         String releaseYear = scanner.nextLine();
         System.out.println("*Digite el precio (solo numeros) ");
         String price = scanner.nextLine();
@@ -81,7 +81,7 @@ public class VideoGameView {
 
     private void listVideoGames() {
         List<VideoGame> videoGames = videoGameController.listVideoGames();
-        System.out.println("Lista de estudiantes: ");
+        System.out.println("Lista de videojuegos: ");
         if(videoGames.isEmpty()) {
         	System.out.println("\nNo hay registros\n");
         	return;
