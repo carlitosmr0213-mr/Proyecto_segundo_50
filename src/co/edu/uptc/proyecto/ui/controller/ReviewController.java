@@ -49,7 +49,7 @@ public class ReviewController {
 		
 		if(!result) {
         	resultDTO.setSuccessful(false);
-        	resultDTO.getListMessageError().add("Ya existe un review con ese id");
+        	resultDTO.getListMessageError().add("Ya existe una reseña con ese id");
         }
         return resultDTO;
 	}

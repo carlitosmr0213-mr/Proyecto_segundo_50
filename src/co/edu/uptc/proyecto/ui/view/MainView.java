@@ -17,10 +17,10 @@ public class MainView {
 	
 	public void runApp() {
 		StringBuilder menu = new StringBuilder();
-		menu.append("----- MENU PRINCIPAL ----- \n");
-		menu.append("\n[1]. Administración de la información de los videojuegos");
-		menu.append("\n[2]. Administración de la información de los desarrolladores");
-		menu.append("\n[3]. Administración de la información de los review");
+		menu.append("------------------- MENU PRINCIPAL -------------------- \n");
+		menu.append("\n[1]. Administración de videojuegos");
+		menu.append("\n[2]. Administración de desarrolladores");
+		menu.append("\n[3]. Administración de reseñas");
 		menu.append("\n[0]. Salir");
 		boolean flag = true;
 		do {

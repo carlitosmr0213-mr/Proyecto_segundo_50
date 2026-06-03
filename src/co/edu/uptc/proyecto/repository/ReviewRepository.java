@@ -55,9 +55,7 @@ public class ReviewRepository {
 		return reviews;
 	}
 
-	public void setReviews(Map<Integer, Review> reviews) {
-		this.reviews = reviews;
-	}
+	
     
     
 }

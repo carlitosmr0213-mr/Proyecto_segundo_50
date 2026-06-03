@@ -29,7 +29,7 @@ public class VideoGameController {
 		validateAlphanumericField("ValidationTitle", title, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", true, resultDTO);
 		validateAlphanumericField("ValidationGenre", genre, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", true, resultDTO);
 		validateAlphanumericField("ValidationReleaseYear", releaseYear, "^(19[7-9]\\d|200\\d|201\\d|202[0-6])$", true, resultDTO);
-		validateAlphanumericField("ValidationPrice", price, "^[+-]?(\\d+\\.?\\d*|\\.\\d+)$",true, resultDTO);
+		validateAlphanumericField("ValidationPrice", price, "^[+]?(\\d+\\.?\\d*|\\.\\d+)$",true, resultDTO);
 		validateAlphanumericField("ValidationPlatform", platform, "^[a-zA-ZÁÉÍÓÚáéíóúÑñ ]+$", false,resultDTO);
 					
 		if(!resultDTO.isSuccessful()) {

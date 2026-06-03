@@ -66,7 +66,7 @@ public class DeveloperController {
 		
 		if (email == null || email.trim().isEmpty()) {
 			resultDTO.setSuccessful(false);
-			resultDTO.getListMessageError().add("El país no puede ser nulo, ni vacio");
+			resultDTO.getListMessageError().add("El email no puede ser nulo, ni vacio");
 		}
 		
 		return resultDTO;

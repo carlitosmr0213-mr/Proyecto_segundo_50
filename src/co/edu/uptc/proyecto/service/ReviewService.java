@@ -5,7 +5,6 @@ import java.util.List;
 import co.edu.uptc.proyecto.domain.Review;
 import co.edu.uptc.proyecto.domain.VideoGame;
 import co.edu.uptc.proyecto.repository.ReviewRepository;
-import co.edu.uptc.proyecto.repository.VideoGameRepository;
 
 public class ReviewService {
 	private ReviewRepository reviewRepository;

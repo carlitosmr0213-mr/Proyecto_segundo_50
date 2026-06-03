@@ -21,12 +21,12 @@ public class ReviewView {
 		int option = -1;
         do {
         	StringBuilder menuReview = new StringBuilder();
-        	menuReview.append("\n ------- MENU DE REVIEW ---- ");
-        	menuReview.append("\n[1]. Crear review");
-        	menuReview.append("\n[2]. Mostrar todos los review");
-        	menuReview.append("\n[3]. Buscar review por código");
-        	menuReview.append("\n[4]. Actualizar review");
-        	menuReview.append("\n[5]. Eliminar review");
+        	menuReview.append("\n ------- MENU DE RESEÑAS ---- ");
+        	menuReview.append("\n[1]. Crear reseña");
+        	menuReview.append("\n[2]. Mostrar todos las reseñas");
+        	menuReview.append("\n[3]. Buscar review por reseña");
+        	menuReview.append("\n[4]. Actualizar reseña");
+        	menuReview.append("\n[5]. Eliminar reseña");
         	menuReview.append("\n[0]. Volver");
             System.out.println(menuReview.toString());
             String strOption = scanner.nextLine();
@@ -44,7 +44,7 @@ public class ReviewView {
                 	ResultDTO resultDTO = findReview();
                 	System.out.println(
                 			resultDTO.getReview() != null ? 
-                			resultDTO.getReview() : "El review no fue encontrado ");
+                			resultDTO.getReview() : "La reseña no fue encontrado ");
                 }
                 case 4 -> updateReview();
                 case 5 -> deleteReview();
@@ -53,7 +53,7 @@ public class ReviewView {
 	}
 	
 	private void createReview() {
-		System.out.println("*Digite el id del review (Valor numérico): ");
+		System.out.println("*Digite el id de la reseña (Valor numérico): ");
         String id = scanner.nextLine();
         System.out.println("*Digite el nombre del autor (solo letras)");
         String author = scanner.nextLine();
@@ -69,19 +69,19 @@ public class ReviewView {
         ResultDTO resultDTO = reviewController.addReview(id, author, score, comment,
         		date, idVideoGame);
         if(!resultDTO.isSuccessful()) {
-        	System.out.println("No se pudo crear el review por las siguientes validaciones fallidas: ");
+        	System.out.println("No se pudo crear la reseña por las siguientes validaciones fallidas: ");
         	System.out.println();
         	resultDTO.getListMessageError().forEach((messajeError) -> {
         		System.out.println(messajeError);
         	});
         	return;
         }
-        System.out.println("El review fue creado");
+        System.out.println("La reseña fue creado");
 	}
 	
 	private void listReview() {
         List<Review> reviews = reviewController.listReview();
-        System.out.println("Lista de reviews: ");
+        System.out.println("Lista de reseñas: ");
         if(reviews.isEmpty()) {
         	System.out.println("\nNo hay registros\n");
         	return;
@@ -90,7 +90,7 @@ public class ReviewView {
     }
 	
 	private ResultDTO findReview() {
-        System.out.println("*Digite el id del review (Valor numérico y solo 4): ");
+        System.out.println("*Digite el id de la reseña (Valor numérico y solo 4): ");
         String id = scanner.nextLine();
         ResultDTO resultDTO = reviewController.findReviewById(id);
         if(!resultDTO.isSuccessful()) {
@@ -114,20 +114,20 @@ public class ReviewView {
     	}
     	
     	if (resultDTO.getReview() == null) {
-	        System.out.println("Error: no se encontró el review.");
+	        System.out.println("Error: no se encontró la reseña.");
 	        return;
 	    }
     	
-        System.out.println("Digite el autor del review: ( " 
+        System.out.println("Digite el autor de la reseña: ( " 
         		+ resultDTO.getReview().getAuthor() + " ) (Presione enter si desea conservar)");
         String author = scanner.nextLine();
-        System.out.println("Digite el puntaje del review: ( " 
+        System.out.println("Digite el puntaje de la reseña: ( " 
         		+ resultDTO.getReview().getScore() + " ) (Presione enter si desea conservar)");
         String score = scanner.nextLine();
-        System.out.println("Digite el comentario del review: ( " 
+        System.out.println("Digite el comentario de la reseña: ( " 
         		+ resultDTO.getReview().getComment() + ") (Presione enter si desea conservar)");
         String comment = scanner.nextLine();
-        System.out.println("Digite la fecha del review (DD/MM/YYYY): ( " 
+        System.out.println("Digite la fecha de la reseña (DD/MM/YYYY): ( " 
         		+ resultDTO.getReview().getDate() + ") (Presione enter si desea conservar)");
         String date = scanner.nextLine();
         
