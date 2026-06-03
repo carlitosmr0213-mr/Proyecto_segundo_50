@@ -40,12 +40,6 @@ public class ReviewService {
 			return false;
 		}
     	Review existing = getReviewById(id);
-        if (author != null && !author.trim().isEmpty()) existing.setAuthor(author.trim());
-        if (score >= 0.0 && score <= 10.0) existing.setScore(score);
-        if (comment != null && !comment.trim().isEmpty()) existing.setComment(comment.trim());
-        if (date != null && !date.trim().isEmpty()) existing.setDate(date.trim());
-        
-        if (videoGame != null) existing.setVideoGame(videoGame);
         reviewRepository.update(existing);
         return true;
     }

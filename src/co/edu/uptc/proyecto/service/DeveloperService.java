@@ -35,10 +35,6 @@ public class DeveloperService {
 			return false;
 		}
     	Developer existing = getDeveloperById(id);
-        if (name != null && !name.trim().isEmpty()) existing.setName(name.trim());
-        if (country != null && !country.trim().isEmpty()) existing.setCountry(country.trim());
-        if (foundedYear >= 1970 && foundedYear <= 2026) existing.setFoundedYear(foundedYear);
-        if (email != null && email.contains("@")) existing.setEmail(email.trim());
         
         developerRepository.updateDeveloper(existing);
         return true;
