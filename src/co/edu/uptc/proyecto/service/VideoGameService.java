@@ -31,15 +31,16 @@ public class VideoGameService {
     }
 
     public boolean updateVideoGame(VideoGame videoGame) {
+    	 if(!videoGameRepository.existsVideoGame(videoGame.getId())) {
+         	return false;
+         }
         VideoGame existing = getVideoGameById(videoGame.getId());
         if (videoGame.getTitle() != null && !videoGame.getTitle().trim().isEmpty()) existing.setTitle(videoGame.getTitle().trim());
         if (videoGame.getGenre() != null && !videoGame.getGenre().trim().isEmpty()) existing.setGenre(videoGame.getGenre().trim());
         if (videoGame.getReleaseYear() >= 1970 && videoGame.getReleaseYear()<= 2030) existing.setReleaseYear(videoGame.getReleaseYear());
         if (videoGame.getPrice() >= 0) existing.setPrice(videoGame.getPrice());
         if (videoGame.getPlataform() != null && !videoGame.getPlataform().trim().isEmpty()) existing.setPlatform(videoGame.getPlataform().trim());
-        if(!videoGameRepository.existsVideoGame(videoGame.getId())) {
-        	return false;
-        }
+       
         videoGameRepository.updateVideoGame(existing);
         return true;
     }
@@ -47,7 +48,7 @@ public class VideoGameService {
     // Composición: al eliminar el juego se eliminan sus reviews
     public boolean deleteVideoGame(int id) {
         getVideoGameById(id); // valida que exista
-        reviewRepository.deleteByVideoGameId(id);
+        reviewRepository.deleteByVideoGameId(videoGameRepository.findVideoGameById(id));
         return videoGameRepository.deleteVideoGame(id);
     }
 }

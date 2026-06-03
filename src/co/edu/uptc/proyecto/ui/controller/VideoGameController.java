@@ -1,7 +1,9 @@
 package co.edu.uptc.proyecto.ui.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import co.edu.uptc.proyecto.domain.Review;
 import co.edu.uptc.proyecto.domain.VideoGame;
 import co.edu.uptc.proyecto.dto.ResultDTO;
 import co.edu.uptc.proyecto.service.VideoGameService;
@@ -34,8 +36,10 @@ public class VideoGameController {
 			return resultDTO;
 		}
 		
+		List<Review> reviews = new ArrayList<Review>();
+		
 		boolean result = videoGameService.addVideoGame(new VideoGame(Integer.parseInt(id), title,
-				genre, Integer.parseInt(releaseYear), Double.parseDouble(price), platform));		
+				genre, Integer.parseInt(releaseYear), Double.parseDouble(price), platform, reviews));		
         if(!result) {
         	resultDTO.setSuccessful(false);
         	resultDTO.getListMessageError().add("Ya existe un videojuego con ese id");

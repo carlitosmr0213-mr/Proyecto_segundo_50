@@ -66,8 +66,8 @@ public class ReviewView {
         System.out.println("*Digite el id del videojuego (Valor numérico): ");
         String idVideoGame = scanner.nextLine();
         
-        ResultDTO resultDTO = reviewController.addReview(id, author, Double.parseDouble(score), comment,
-        		date, Integer.parseInt(idVideoGame));
+        ResultDTO resultDTO = reviewController.addReview(id, author, score, comment,
+        		date, idVideoGame);
         if(!resultDTO.isSuccessful()) {
         	System.out.println("No se pudo crear el review por las siguientes validaciones fallidas: ");
         	System.out.println();
@@ -133,7 +133,7 @@ public class ReviewView {
         
         
         ResultDTO resultUpdateDTO = reviewController.updateReview(
-        		String.valueOf(resultDTO.getReview().getId()), author, score, comment, date, String.valueOf(resultDTO.getReview().getVideoGameId()));
+        		String.valueOf(resultDTO.getReview().getId()), author, score, comment, date, String.valueOf(resultDTO.getReview().getVideoGame().toString()));
         if(resultUpdateDTO.isSuccessful()) {
         	System.out.println(resultUpdateDTO.getMessage());
         }else {

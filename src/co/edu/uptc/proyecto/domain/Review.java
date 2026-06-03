@@ -6,19 +6,19 @@ public class Review {
     private double score; 
     private String comment;
     private String date;        
-    private int videoGameId;    
+    private VideoGame videoGame;    
  
     public Review() {
     	
     }
  
-    public Review(int id, String author, double score, String comment, String date, int videoGameId) {
+    public Review(int id, String author, double score, String comment, String date, VideoGame videoGame) {
         this.id = id;
         this.author = author;
         this.score = score;
         this.comment = comment;
         this.date = date;
-        this.videoGameId = videoGameId;
+        this.videoGame = videoGame;
     }
 
 	public int getId() {
@@ -61,18 +61,18 @@ public class Review {
 		this.date = date;
 	}
 
-	public int getVideoGameId() {
-		return videoGameId;
+	public VideoGame getVideoGame() {
+		return videoGame;
 	}
 
-	public void setVideoGameId(int videoGameId) {
-		this.videoGameId = videoGameId;
+	public void setVideoGame(VideoGame videoGame) {
+		this.videoGame = videoGame;
 	}
 
 	@Override
 	public String toString() {
 		return "Review [id=" + id + ", author=" + author + ", score=" + score + ", comment=" + comment + ", date="
-				+ date + ", videoGameId=" + videoGameId + "]";
+				+ date + ", videoGame=" + videoGame.getTitle() + "]";
 	} 
     
 	

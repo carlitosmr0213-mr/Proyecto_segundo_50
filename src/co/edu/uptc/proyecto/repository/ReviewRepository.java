@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import co.edu.uptc.proyecto.domain.Review;
+import co.edu.uptc.proyecto.domain.VideoGame;
  
 public class ReviewRepository {
  
-    private Map<Integer, Review> reviews = new HashMap<>();
+    private static Map<Integer, Review> reviews = new HashMap<>();
  
     public Review saveReview(Review review) {
         reviews.put(review.getId(), review);
@@ -24,12 +24,7 @@ public class ReviewRepository {
         return new ArrayList<Review>(reviews.values());
     }
  
-    // Composición: obtener reviews por videojuego
-    public List<Review> findByVideoGameId(int videoGameId) {
-        return reviews.values().stream()
-                .filter(r -> r.getVideoGameId() == videoGameId)
-                .collect(Collectors.toList());
-    }
+   
  
     public Review update(Review review) {
         if (!reviews.containsKey(review.getId())) {
@@ -48,8 +43,8 @@ public class ReviewRepository {
     }
  
     // Composición: eliminar todas las reviews de un videojuego
-    public void deleteByVideoGameId(int videoGameId) {
-        reviews.entrySet().removeIf(e -> e.getValue().getVideoGameId() == videoGameId);
+    public void deleteByVideoGameId(VideoGame videoGame) {
+        reviews.entrySet().removeIf(e -> e.getValue().getVideoGame() == videoGame);
     }
  
     public boolean existsReview(int id) {

@@ -8,7 +8,7 @@ import co.edu.uptc.proyecto.domain.VideoGame;
 
 public class VideoGameRepository {
 
-    private Map<Integer, VideoGame> videoGames = new HashMap<>();
+    private static Map<Integer, VideoGame> videoGames = new HashMap<>();
    
 
     public VideoGame saveVideoGame(VideoGame videoGame) {

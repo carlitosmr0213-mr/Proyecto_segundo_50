@@ -8,7 +8,7 @@ import co.edu.uptc.proyecto.domain.Developer;
  
 public class DeveloperRepository {
  
-    private Map<Integer, Developer> developers = new HashMap<>();
+    private static Map<Integer, Developer> developers = new HashMap<>();
  
     public Developer saveDeveloper(Developer developer) {
         developers.put(developer.getId(), developer);

@@ -4,18 +4,22 @@ package co.edu.uptc.proyecto.ui.controller;
 import java.util.List;
 
 import co.edu.uptc.proyecto.domain.Review;
+import co.edu.uptc.proyecto.domain.VideoGame;
 import co.edu.uptc.proyecto.dto.ResultDTO;
 import co.edu.uptc.proyecto.service.ReviewService;
+import co.edu.uptc.proyecto.service.VideoGameService;
 
 public class ReviewController {
 	private ReviewService reviewService;
+	private VideoGameService videoGameService;
 
 	public ReviewController() {
 		super();
 		this.reviewService = new ReviewService();
+		this.videoGameService = new VideoGameService();
 	}
 	
-	public ResultDTO addReview(String id, String author, double score, String comment, String date, int videoGameId) {
+	public ResultDTO addReview(String id, String author, String score, String comment, String date, String videoGameId) {
 		ResultDTO resultDTO = this.validateRequiredFields(id, author, score, comment, date, videoGameId) ;
 		
 		if (!resultDTO.isSuccessful()) {
@@ -33,16 +37,24 @@ public class ReviewController {
 			return resultDTO;
 		}
 		
-		boolean result = reviewService.createReview(id, author, score, comment, date, videoGameId);		
-        if(!result) {
+		VideoGame videoGame = videoGameService.getVideoGameById(Integer.parseInt(videoGameId));
+		
+	    if (videoGame == null) {
+	        resultDTO.setSuccessful(false);
+	        resultDTO.getListMessageError().add("No existe un videojuego con ese id");
+	        return resultDTO; // ✅ Sale aquí, no llega a createReview
+	    }
+	    
+		boolean result = reviewService.createReview(id, author, Double.parseDouble(score), comment, date, videoGameService.getVideoGameById(Integer.parseInt(videoGameId)));		
+		
+		if(!result) {
         	resultDTO.setSuccessful(false);
         	resultDTO.getListMessageError().add("Ya existe un review con ese id");
         }
-        
         return resultDTO;
 	}
 	
-	private ResultDTO validateRequiredFields(String id, String author, double score, String comment, String date, int videoGameId) {
+	private ResultDTO validateRequiredFields(String id, String author, String score, String comment, String date, String videoGameId) {
 		ResultDTO resultDTO = new ResultDTO();
 		resultDTO.setSuccessful(true);
 		
@@ -54,9 +66,9 @@ public class ReviewController {
 			resultDTO.setSuccessful(false);
 			resultDTO.getListMessageError().add("El autor no puede ser null, ni vacío ");
 		}
-		if (score < 0) {
+		if (score == null || score.trim().isEmpty()) {
 			resultDTO.setSuccessful(false);
-			resultDTO.getListMessageError().add("El id no puede ser menor que 0");
+			resultDTO.getListMessageError().add("El id del videojuego debe ser mayor a cero");
 		}
 		if (comment == null || comment.trim().isEmpty()) {
 			resultDTO.setSuccessful(false);
@@ -66,9 +78,9 @@ public class ReviewController {
 			resultDTO.setSuccessful(false);
 			resultDTO.getListMessageError().add("La fecha no puede ser null, ni vacío ");
 		}
-		if (videoGameId <= 0 ) {
+		if (videoGameId == null || videoGameId.trim().isEmpty()) {
 			resultDTO.setSuccessful(false);
-			resultDTO.getListMessageError().add("El ide del videojuego debe ser mayor a cero");
+			resultDTO.getListMessageError().add("El id del videojuego debe ser mayor a cero");
 		}
 		return resultDTO;
 	}
@@ -140,7 +152,7 @@ public class ReviewController {
                 ? resultDTO.getVideoGame().getReleaseYear() 
                 : Integer.parseInt(videoGameId.trim());
 		
-		boolean result = reviewService.updateReview(Integer.parseInt(id), author, scoreDouble, comment, date, videoGameInt);
+		boolean result = reviewService.updateReview(Integer.parseInt(id), author, scoreDouble, comment, date, videoGameService.getVideoGameById(videoGameInt));
 		if (!result) {
 			resultDTO.setSuccessful(false);
 			resultDTO.getListMessageError().add("La review no fue encontrado");

@@ -99,7 +99,7 @@ public class VideoGame {
 	@Override
 	public String toString() {
 		return "VideoGame [id=" + id + ", title=" + title + ", genre=" + genre + ", releaseYear=" + releaseYear
-				+ ", price=" + price + ", platform=" + platform + ", reviews=" + reviews + "]";
+				+ ", price=" + price + ", platform=" + platform + ", reviews=" + reviews.toString() + "]";
 	}
 	
 	
